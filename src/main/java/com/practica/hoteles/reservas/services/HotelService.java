@@ -16,15 +16,15 @@ public interface HotelService {
 
     List<HotelDto> getAllHotels();
 
-    AvailabilityDto openAvailability(Long hotelId, LocalDate fromDate, LocalDate toDate, int rooms);
+//    AvailabilityDto openAvailability(Long hotelId, LocalDate fromDate, LocalDate toDate, int rooms);
 
-    List<HotelDto> getAvailableHotels(LocalDate fromDate, LocalDate toDate, String hotelName, String hotelCategory);
+//    List<HotelDto> getAvailableHotels(LocalDate fromDate, LocalDate toDate, String hotelName, String hotelCategory);
 
-    BookingDto createBooking(Long hotelId, LocalDate fromDate, LocalDate toDate, String email);
+//    BookingDto createBooking(Long hotelId, LocalDate fromDate, LocalDate toDate, String email);
 
-    List<BookingDto> getBookingsByHotelAndDates(Long hotelId, LocalDate fromDate, LocalDate toDate);
+//    List<BookingDto> getBookingsByHotelAndDates(Long hotelId, LocalDate fromDate, LocalDate toDate);
 
-    BookingDto getBookingById(Long id);
+//    BookingDto getBookingById(Long id);
 
-    void cancelBooking(Long id);
+//    void cancelBooking(Long id);
 }

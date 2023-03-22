@@ -6,7 +6,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
-    BookingDto createBooking(Long hotelId, LocalDate fromDate, LocalDate toDate, String email);
+
+    BookingDto createBooking(BookingDto bookingDto);
+
 
     List<BookingDto> getBookingsByHotelAndDates(Long hotelId, LocalDate fromDate, LocalDate toDate);
 
