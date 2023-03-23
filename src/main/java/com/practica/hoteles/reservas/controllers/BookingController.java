@@ -2,7 +2,6 @@ package com.practica.hoteles.reservas.controllers;
 
 import com.practica.hoteles.reservas.dtos.BookingDto;
 import com.practica.hoteles.reservas.services.BookingService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingDto> createBooking(@Valid @RequestBody BookingDto bookingDto) {
+    public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto) {
         BookingDto newBooking = bookingService.createBooking(bookingDto);
         return new ResponseEntity<>(newBooking, HttpStatus.CREATED);
     }

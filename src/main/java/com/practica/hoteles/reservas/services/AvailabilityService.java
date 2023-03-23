@@ -1,19 +1,16 @@
 package com.practica.hoteles.reservas.services;
 
-import com.practica.hoteles.reservas.dtos.AvailabilityDto;
+import com.practica.hoteles.reservas.dtos.AvailabilityRange;
+import com.practica.hoteles.reservas.entities.Availability;
 
 import java.time.LocalDate;
 
 public interface AvailabilityService {
-    AvailabilityDto createAvailability(Long hotelId, LocalDate date, int rooms);
+    AvailabilityRange createAvailabilities(long hotelId, LocalDate initDate, LocalDate endDate, int rooms);
 
-    AvailabilityDto updateAvailability(Long availabilityId, int rooms);
+    Availability getAvailabilityByHotelAndDate(long hotelId, LocalDate date);
 
-    AvailabilityDto getAvailability(Long availabilityId);
+    boolean checkAvailability(long hotelId, LocalDate fromDate, LocalDate toDate, int rooms);
 
-    AvailabilityDto getAvailabilityByHotelAndDate(Long hotelId, LocalDate date);
-
-    boolean checkAvailability(Long hotelId, LocalDate fromDate, LocalDate toDate, int rooms);
-
-    void updateAvailabilityByBooking(Long bookingId);
+    void updateAvailabilityByBooking(long bookingId);
 }

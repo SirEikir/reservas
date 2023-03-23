@@ -1,20 +1,18 @@
 package com.practica.hoteles.reservas.services;
 
-import com.practica.hoteles.reservas.dtos.AvailabilityDto;
-import com.practica.hoteles.reservas.dtos.BookingDto;
-import com.practica.hoteles.reservas.dtos.HotelDto;
+import com.practica.hoteles.reservas.dtos.CreateHotelDto;
+import com.practica.hoteles.reservas.entities.Hotel;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface HotelService {
-    HotelDto createHotel(HotelDto hotelDto);
+    Hotel createHotel(CreateHotelDto hotelDto);
 
-    HotelDto updateHotel(Long id, HotelDto hotelDto);
+    Hotel updateHotel(Long id, CreateHotelDto hotelDto);
 
-    HotelDto getHotelById(Long id);
+    Hotel getHotelById(Long id);
 
-    List<HotelDto> getAllHotels();
+    List<Hotel> getAllHotels();
 
 //    AvailabilityDto openAvailability(Long hotelId, LocalDate fromDate, LocalDate toDate, int rooms);
 

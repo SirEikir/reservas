@@ -1,6 +1,7 @@
 package com.practica.hoteles.reservas.services.impl;
 
 
+import com.practica.hoteles.reservas.dtos.CreateHotelDto;
 import com.practica.hoteles.reservas.dtos.HotelDto;
 import com.practica.hoteles.reservas.entities.Hotel;
 import com.practica.hoteles.reservas.exceptions.HotelNotFoundException;
@@ -23,35 +24,29 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelDto createHotel(HotelDto hotelDto) {
-        Hotel hotel = new Hotel(hotelDto.getName(), hotelDto.getCategory());
-        Hotel savedHotel = hotelRepository.save(hotel);
-        return new HotelDto(savedHotel.getId(), savedHotel.getName(), savedHotel.getCategory());
+    public Hotel createHotel(CreateHotelDto dto) {
+        Hotel hotel = new Hotel(dto.getName(), dto.getCategory());
+        return hotelRepository.save(hotel);
     }
 
     @Override
-    public HotelDto updateHotel(Long id, HotelDto hotelDto) {
+    public Hotel updateHotel(Long id, CreateHotelDto hotelDto) {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new HotelNotFoundException(id));
         hotel.setName(hotelDto.getName());
         hotel.setCategory(hotelDto.getCategory());
-        Hotel savedHotel = hotelRepository.save(hotel);
-        return new HotelDto(savedHotel.getId(), savedHotel.getName(), savedHotel.getCategory());
+        return hotelRepository.save(hotel);
     }
 
     @Override
-    public HotelDto getHotelById(Long id) {
-        Hotel hotel = hotelRepository.findById(id)
+    public Hotel getHotelById(Long id) {
+        return hotelRepository.findById(id)
                 .orElseThrow(() -> new HotelNotFoundException(id));
-        return new HotelDto(hotel.getId(), hotel.getName(), hotel.getCategory());
     }
 
     @Override
-    public List<HotelDto> getAllHotels() {
-        List<Hotel> hotels = hotelRepository.findAll();
-        return hotels.stream()
-                .map(hotel -> new HotelDto(hotel.getId(), hotel.getName(), hotel.getCategory()))
-                .collect(Collectors.toList());
+    public List<Hotel> getAllHotels() {
+        return hotelRepository.findAll();
     }
 
 }

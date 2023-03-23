@@ -17,7 +17,26 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class BookingServiceImpl  {
+public class BookingServiceImpl implements BookingService  {
+    @Override
+    public BookingDto createBooking(BookingDto bookingDto) {
+        return null;
+    }
+
+    @Override
+    public List<BookingDto> getBookingsByHotelAndDates(Long hotelId, LocalDate fromDate, LocalDate toDate) {
+        return null;
+    }
+
+    @Override
+    public BookingDto getBookingById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void cancelBooking(Long id) {
+
+    }
 
 //    private final BookingRepository bookingRepository;
 //    private final HotelRepository hotelRepository;

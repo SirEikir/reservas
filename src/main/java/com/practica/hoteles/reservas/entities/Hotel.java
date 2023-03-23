@@ -3,6 +3,7 @@ package com.practica.hoteles.reservas.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "hotels")
