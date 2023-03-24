@@ -1,5 +1,7 @@
 package com.practica.hoteles.reservas.dtos;
 
+import com.practica.hoteles.reservas.entities.Availability;
+import com.practica.hoteles.reservas.entities.Hotel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +18,14 @@ public class AvailabilityRange {
     private LocalDate initDate;
     private LocalDate endDate;
     private int rooms;
+
+
+    public static AvailabilityRange availabilityRange(AvailabilityRange availability){
+        AvailabilityRange dtoResponse = new AvailabilityRange(availability.hotel,availability.initDate,availability.endDate, availability.rooms);
+        return dtoResponse;
+    }
 }
+
 
 
 

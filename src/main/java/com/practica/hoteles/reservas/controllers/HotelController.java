@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.practica.hoteles.reservas.dtos.HotelDto.hotelToDto;
 
@@ -41,9 +43,10 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Hotel>> getAllHotels() {
+    public ResponseEntity<List<HotelDto>> getAllHotels() {
         List<Hotel> hotels = hotelService.getAllHotels();
-        return ResponseEntity.ok(hotels);
+        return ResponseEntity.ok(hotels.stream().map(HotelDto::hotelToDto).collect(Collectors.toList()));
+
     }
 
 

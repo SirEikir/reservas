@@ -6,13 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AvailabilityRepository extends JpaRepository<Availability, Long> {
     List<Availability> findByHotelIdAndDateBetween(Long hotelId, LocalDate initDate, LocalDate endDate);
-
-    Availability findByHotelIdAndDate(long hotelId, LocalDate currentDate);
-
-
-    //Crear filtros por nombre y categoria del hotel
+    Availability findByHotelIdAndDate(long hotelId, LocalDate date);
+    List<Availability> findByDateBetween (LocalDate initDate, LocalDate endDate);
 }
