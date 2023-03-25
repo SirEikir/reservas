@@ -19,11 +19,6 @@ public class AvailabilityRange {
     private LocalDate endDate;
     private int rooms;
 
-
-    public static AvailabilityRange availabilityRange(AvailabilityRange availability){
-        AvailabilityRange dtoResponse = new AvailabilityRange(availability.hotel,availability.initDate,availability.endDate, availability.rooms);
-        return dtoResponse;
-    }
 }
 
 

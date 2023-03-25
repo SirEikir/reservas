@@ -35,15 +35,14 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     private BookingRepository bookingRepository;
 
     public Availability createAvailability(Hotel hotel, LocalDate date, int rooms) {
-        // Encuentra el hotel por ID
 
-        // Create a new availability entity
+        // Creamos nueva entidad de Disponibilidad
         Availability availability = new Availability();
         availability.setHotel(hotel);
         availability.setDate(date);
         availability.setRooms(rooms);
 
-        // Save the availability entity
+        // Guardamos la entidad "Disponibilidad"
         return availabilityRepository.save(availability);
     }
 

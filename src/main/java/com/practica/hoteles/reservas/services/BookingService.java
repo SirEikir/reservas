@@ -1,18 +1,20 @@
 package com.practica.hoteles.reservas.services;
 
 import com.practica.hoteles.reservas.dtos.BookingDto;
+import com.practica.hoteles.reservas.entities.Booking;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
 
-    BookingDto createBooking(BookingDto bookingDto);
+    Booking createBookings(long hotelId, LocalDate fromDate, LocalDate toDate, String email);
 
+    List<Booking> getBookingsByHotelIdAndDate(long hotelId,LocalDate fromDate, LocalDate toDate);
 
-    List<BookingDto> getBookingsByHotelAndDates(Long hotelId, LocalDate fromDate, LocalDate toDate);
+    Booking getBookingById(Long id);
 
-    BookingDto getBookingById(Long id);
-
-    void cancelBooking(Long id);
+//    BookingDto getBookingById(Long id);
+//
+//    void cancelBooking(Long id);
 }

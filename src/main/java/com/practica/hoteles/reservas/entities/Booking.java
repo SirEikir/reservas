@@ -11,16 +11,13 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "id")
+    private long id;
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-
     private LocalDate dateFrom;
-
     private LocalDate dateTo;
-
     private String email;
 
     public Booking() {

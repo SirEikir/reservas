@@ -11,13 +11,11 @@ public class Availability {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-
     private int rooms;
 
     public Availability() {

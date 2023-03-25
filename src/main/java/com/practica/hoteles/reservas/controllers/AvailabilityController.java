@@ -20,38 +20,38 @@ import java.util.stream.Collectors;
 @RequestMapping("/availabilities")
 public class AvailabilityController {
 
-        private final AvailabilityService availabilityService;
+    private final AvailabilityService availabilityService;
 
-        @Autowired
-        public AvailabilityController(AvailabilityService availabilityService) {
-            this.availabilityService = availabilityService;
-        }
+    @Autowired
+    public AvailabilityController(AvailabilityService availabilityService) {
+        this.availabilityService = availabilityService;
+    }
 
-        @PostMapping
-        @ResponseStatus(HttpStatus.CREATED)
-        public AvailabilityRange createAvailability(@RequestParam long hotelId,
-                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate initDate,
-                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                                    @RequestParam int rooms) {
-            return availabilityService.createAvailabilities(hotelId, initDate, endDate, rooms);
-        }
-
-        @GetMapping
-        public AvailabilityRange getAvailabilityByHotelAndDate(@RequestParam long hotelId,
-                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-            Availability av =  availabilityService.getAvailabilityByHotelAndDate(hotelId, date);
-            HotelDto hdto = HotelDto.hotelToDto(av.getHotel());
-            return new AvailabilityRange(hdto, av.getDate(), av.getDate(), av.getRooms());
-        }
-
-
-        @GetMapping("/check")
-        public List<HotelDto> checkAvailability(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate initDate,
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AvailabilityRange createAvailability(@RequestParam long hotelId,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate initDate,
                                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                                @RequestParam @Nullable String hotelName,
-                                                @RequestParam @Nullable String hotelCategory) {
-            List<Hotel> hotels = availabilityService.checkAvailability(initDate, endDate,hotelName, hotelCategory);
-            return hotels.stream().map(HotelDto::hotelToDto).collect(Collectors.toList());
-        }
+                                                @RequestParam int rooms) {
+        return availabilityService.createAvailabilities(hotelId, initDate, endDate, rooms);
+    }
+
+    @GetMapping
+    public AvailabilityRange getAvailabilityByHotelAndDate(@RequestParam long hotelId,
+                                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        Availability av =  availabilityService.getAvailabilityByHotelAndDate(hotelId, date);
+        HotelDto hdto = HotelDto.hotelToDto(av.getHotel());
+        return new AvailabilityRange(hdto, av.getDate(), av.getDate(), av.getRooms());
+    }
+
+
+    @GetMapping("/check")
+    public List<HotelDto> checkAvailability(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate initDate,
+                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                            @RequestParam @Nullable String hotelName,
+                                            @RequestParam @Nullable String hotelCategory) {
+        List<Hotel> hotels = availabilityService.checkAvailability(initDate, endDate,hotelName, hotelCategory);
+        return hotels.stream().map(HotelDto::hotelToDto).collect(Collectors.toList());
+    }
 
 }
