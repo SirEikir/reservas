@@ -79,7 +79,7 @@ public class BookingController {
      @throws BookingNotFoundException Si no se encuentra ninguna reserva con el ID especificado.
      */
     @GetMapping("/book/{id}")
-    public ResponseEntity<BookingDto> getBookingsByHotelAndDates(@RequestParam long id) throws BookingNotFoundException {
+    public ResponseEntity<BookingDto> getBookingsByHotelAndDates(@PathVariable long id) throws BookingNotFoundException {
         BookingDto booking = BookingMapper.bookingToDto(bookingService.getBookingById(id));
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
