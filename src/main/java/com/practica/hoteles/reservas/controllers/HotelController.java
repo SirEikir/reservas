@@ -60,7 +60,7 @@ public class HotelController {
      @throws HotelNotFoundException si el hotel con el id especificado no existe.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotelById(@RequestParam long id) throws HotelNotFoundException {
+    public ResponseEntity<Hotel> getHotelById(@PathVariable long id) throws HotelNotFoundException {
         Hotel hotel = hotelService.getHotelById(id);
         return ResponseEntity.ok(hotel);
     }
