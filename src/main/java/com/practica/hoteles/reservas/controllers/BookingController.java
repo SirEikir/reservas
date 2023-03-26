@@ -78,7 +78,7 @@ public class BookingController {
      @return DTO de reserva correspondiente al ID especificado.
      @throws BookingNotFoundException Si no se encuentra ninguna reserva con el ID especificado.
      */
-    @GetMapping("/book/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<BookingDto> getBookingsByHotelAndDates(@PathVariable long id) throws BookingNotFoundException {
         BookingDto booking = BookingMapper.bookingToDto(bookingService.getBookingById(id));
         return new ResponseEntity<>(booking, HttpStatus.OK);
@@ -89,8 +89,8 @@ public class BookingController {
      @param id ID de la reserva a cancelar.
      @return Respuesta HTTP indicando si se canceló la reserva o no.
      */
-    @DeleteMapping
-    public ResponseEntity<?> cancelBooking(@RequestParam long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> cancelBooking(@PathVariable long id) {
         try {
             bookingService.cancelBooking(id);
             return ResponseEntity.ok().build();
