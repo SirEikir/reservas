@@ -50,7 +50,7 @@ public class BookingController {
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 //    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+//    public ResponseEntity<Void> deleteBooking(@RequestParam Long id) {
 //        bookingService.cancelBooking(id);
 //        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //    }

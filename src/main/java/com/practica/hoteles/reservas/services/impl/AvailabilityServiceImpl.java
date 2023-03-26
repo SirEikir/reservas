@@ -55,17 +55,18 @@ public class AvailabilityServiceImpl implements AvailabilityService {
         while (!currentDate.isAfter(endDate)) {
             Availability availability = availabilityRepository.findByHotelIdAndDate(hotelId, currentDate);
             if (availability == null) {
-                // If availability does not exist for the current date, create a new one with the given number of rooms
+                // Si la disponibilidad no existe, creara un rango nuevo para las fechas indicadas con las habitaciones
+                //señaladas
                 availability = createAvailability(hotel, currentDate, rooms);
             } else {
-                // If availability already exists for the current date, add the given number of rooms to it
+                // Si la disponibilidad ya existe para las fechas indicadas, las habitaciones se acumularán
                 availability.setRooms(availability.getRooms() + rooms);
             }
-            // Save the availability
+            // Guardamos la disponibilidad
             availabilityRepository.save(availability);
-            // Add the availability to the list
+            // Añade la disponibilidad a la lista
             availabilities.add(availability);
-            // Move to the next date
+            // Se mueve a la siguiente fecha
             currentDate = currentDate.plusDays(1);
         }
         return new AvailabilityRange(HotelDto.hotelToDto(hotel), initDate, endDate, rooms);

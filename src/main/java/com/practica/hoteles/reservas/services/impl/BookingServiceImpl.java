@@ -1,12 +1,15 @@
 package com.practica.hoteles.reservas.services.impl;
 
+import com.practica.hoteles.reservas.entities.Availability;
 import com.practica.hoteles.reservas.entities.Booking;
 import com.practica.hoteles.reservas.entities.Hotel;
 import com.practica.hoteles.reservas.exceptions.BookingNotFoundException;
 import com.practica.hoteles.reservas.exceptions.HotelNotFoundException;
+import com.practica.hoteles.reservas.exceptions.NotAvailableException;
 import com.practica.hoteles.reservas.repositories.AvailabilityRepository;
 import com.practica.hoteles.reservas.repositories.BookingRepository;
 import com.practica.hoteles.reservas.repositories.HotelRepository;
+import com.practica.hoteles.reservas.services.AvailabilityService;
 import com.practica.hoteles.reservas.services.BookingService;
 import com.practica.hoteles.reservas.services.HotelService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,6 +26,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private AvailabilityRepository availabilityRepository;
+
+    @Autowired
+    private AvailabilityService availabilityService;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -34,24 +41,40 @@ public class BookingServiceImpl implements BookingService {
 
     public Booking createBooking(Hotel hotel, LocalDate initDate, LocalDate endDate, String email) {
 
-        // Create a new availability entity
+        // Creamos un rango de Reserva
         Booking booking = new Booking(hotel, initDate, endDate, email);
 
-        // Save the availability entity
+        // Guardar la entidad de la reserva
         return bookingRepository.save(booking);
     }
 
     @Override
     public Booking createBookings(long hotelId, LocalDate fromDate, LocalDate toDate, String email) {
         Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new HotelNotFoundException(hotelId));
-        return createBooking(hotel, fromDate, toDate, email);
+        List<Availability> availabilities = new LinkedList<>();
+        LocalDate currentDate = fromDate;
+
+        while (!currentDate.isAfter(toDate)) {
+            Availability availability = availabilityRepository.findByHotelIdAndDate(hotelId, currentDate);
+            if (availability == null || availability.getRooms() < 1) {
+                // Si la disponibilidad no existe o no hay habitaciones disponibles, no podemos crear la reserva
+                throw new NotAvailableException(hotelId);
+            }
+            availabilities.add(availability);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        Booking booking = createBooking(hotel, fromDate, toDate, email);
+        // Restar las habitaciones utilizadas en cada día
+        for (Availability availability : availabilities) {
+            availability.setRooms(availability.getRooms() - 1);
+            availabilityRepository.save(availability);
+        }
+        return booking;
     }
 
     @Override
     public List<Booking> getBookingsByHotelIdAndDate(long hotelId, LocalDate initDate, LocalDate endDate) {
-        // Encontrar el hotel por ID
-//        hotelService.getHotelById(hotelId);
-
         // Encontrar todas las reservas para el hotel y la fecha
         return bookingRepository.findByHotelIdAndDateToAfterAndDateFromBefore(hotelId, initDate, endDate);
     }
@@ -61,21 +84,24 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new BookingNotFoundException(id));
     }
 
-//
-//    @Override
-//    public void cancelBooking(Long id) {
-//        // Encontrar la reserva por ID
-//        Booking booking = bookingRepository.findById(id)
-//                .orElseThrow(() -> new BookingNotFoundException(id));
-//
-//        // Actualizar la disponibilidad
-//        Availability availability = availabilityRepository.findByHotelIdAndDate(booking.getHotel().getId(), booking.getDate());
-//        availability.setRooms(availability.getRooms() + booking.getRooms());
-//        availabilityRepository.save(availability);
-//
-//        // Eliminar la reserva
-//        bookingRepository.delete(booking);
-//    }
+    @Override
+    public void cancelBooking(Long id) {
+        // Encontrar la reserva por ID
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new BookingNotFoundException(id));
+
+        // Actualizar la disponibilidad para cada fecha de la reserva
+        LocalDate currentDate = booking.getDateFrom();
+        while (!currentDate.isAfter(booking.getDateTo())) {
+            Availability availability = availabilityRepository.findByHotelIdAndDate(booking.getHotel().getId(), currentDate);
+            availability.setRooms(availability.getRooms() + 1);
+            availabilityRepository.save(availability);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        // Eliminar la reserva
+        bookingRepository.delete(booking);
+    }
 }
 
 

@@ -14,7 +14,5 @@ public interface BookingService {
 
     Booking getBookingById(Long id);
 
-//    BookingDto getBookingById(Long id);
-//
-//    void cancelBooking(Long id);
+    void cancelBooking(Long id);
 }
