@@ -26,7 +26,11 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Hotel createHotel(CreateHotelDto dto) {
         Hotel hotel = new Hotel(dto.getName(), dto.getCategory());
-        return hotelRepository.save(hotel);
+        if (hotel.getName() == null || hotel.getName() == ""){
+            throw new IllegalArgumentException();
+        }else {
+            return hotelRepository.save(hotel);
+        }
     }
 
     @Override

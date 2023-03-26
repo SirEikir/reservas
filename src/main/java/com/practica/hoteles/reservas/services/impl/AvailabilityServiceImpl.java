@@ -5,6 +5,7 @@ import com.practica.hoteles.reservas.dtos.HotelDto;
 import com.practica.hoteles.reservas.entities.Availability;
 import com.practica.hoteles.reservas.entities.Hotel;
 import com.practica.hoteles.reservas.exceptions.AvailabilityNotFoundException;
+import com.practica.hoteles.reservas.exceptions.NotAvailableException;
 import com.practica.hoteles.reservas.repositories.AvailabilityRepository;
 import com.practica.hoteles.reservas.repositories.BookingRepository;
 import com.practica.hoteles.reservas.repositories.HotelRepository;
@@ -76,7 +77,12 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     public Availability getAvailabilityByHotelAndDate(long hotelId, LocalDate date) {
 
         Availability availability = availabilityRepository.findByHotelIdAndDate(hotelId, date);
-        return availability;
+        if (availability == null) {
+            throw new NotAvailableException(hotelId);
+
+        } else {
+            return availability;
+        }
     }
 
     @Override

@@ -41,7 +41,7 @@ public class BookingServiceImpl implements BookingService {
 
     public Booking createBooking(Hotel hotel, LocalDate initDate, LocalDate endDate, String email) {
 
-        // Creamos un rango de Reserva
+        // Crear un rango de Reserva
         Booking booking = new Booking(hotel, initDate, endDate, email);
 
         // Guardar la entidad de la reserva
