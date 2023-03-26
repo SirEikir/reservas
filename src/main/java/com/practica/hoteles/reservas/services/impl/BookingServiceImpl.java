@@ -49,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking createBookings(long hotelId, LocalDate fromDate, LocalDate toDate, String email) {
+    public Booking createBookings(long hotelId, LocalDate fromDate, LocalDate toDate, String email) throws HotelNotFoundException, NotAvailableException {
         Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new HotelNotFoundException(hotelId));
         List<Availability> availabilities = new LinkedList<>();
         LocalDate currentDate = fromDate;
@@ -79,13 +79,13 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findByHotelIdAndDateToAfterAndDateFromBefore(hotelId, initDate, endDate);
     }
     @Override
-    public Booking getBookingById(Long id) {
+    public Booking getBookingById(Long id) throws BookingNotFoundException {
         return bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException(id));
     }
 
     @Override
-    public void cancelBooking(Long id) {
+    public void cancelBooking(Long id) throws BookingNotFoundException {
         // Encontrar la reserva por ID
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException(id));

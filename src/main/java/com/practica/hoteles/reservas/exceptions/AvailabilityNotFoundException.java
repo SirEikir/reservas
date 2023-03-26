@@ -1,7 +1,7 @@
 package com.practica.hoteles.reservas.exceptions;
 
-public class AvailabilityNotFoundException extends RuntimeException {
+public class AvailabilityNotFoundException extends Exception {
     public AvailabilityNotFoundException(Long id) {
-        super(id + "No existe disponibilidad para esos parametros ");
+        super(id + " La disponibilidad no existe ");
     }
 }

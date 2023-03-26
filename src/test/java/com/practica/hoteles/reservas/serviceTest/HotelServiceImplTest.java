@@ -61,7 +61,7 @@ public class HotelServiceImplTest {
     }
 
     @Test
-    public void updateHotel_Success() {
+    public void updateHotel_Success() throws HotelNotFoundException {
         // Arrange
         Long id = 1L;
         CreateHotelDto dto = new CreateHotelDto("Test Hotel", "3 Estrellas");
@@ -85,7 +85,7 @@ public class HotelServiceImplTest {
     }
 
     @Test(expected = HotelNotFoundException.class)
-    public void updateHotel_ThrowsExceptionWhenHotelNotFound() {
+    public void updateHotel_ThrowsExceptionWhenHotelNotFound() throws HotelNotFoundException {
         // Arrange
         CreateHotelDto dto = new CreateHotelDto();
         dto.setName("Updated hotel name");
@@ -100,7 +100,7 @@ public class HotelServiceImplTest {
 
 
     @Test(expected = HotelNotFoundException.class)
-    public void updateHotel_HotelNotFound() {
+    public void updateHotel_HotelNotFound() throws HotelNotFoundException {
         // Arrange
         Long id = 1L;
         CreateHotelDto dto = new CreateHotelDto("Test Hotel", "3 Estrellas");
@@ -113,7 +113,7 @@ public class HotelServiceImplTest {
         // Expected exception: HotelNotFoundException
     }
     @Test
-    public void getHotelById_Success() {
+    public void getHotelById_Success() throws HotelNotFoundException {
         // Arrange
         Long id = 1L;
         Hotel expectedHotel = new Hotel("Hotel ABC", "5-star");
@@ -130,7 +130,7 @@ public class HotelServiceImplTest {
     }
 
     @Test(expected = HotelNotFoundException.class)
-    public void getHotelById_HotelNotFound() {
+    public void getHotelById_HotelNotFound() throws HotelNotFoundException {
         // Arrange
         Long id = 1L;
         when(hotelRepository.findById(id)).thenReturn(Optional.empty());
@@ -142,7 +142,7 @@ public class HotelServiceImplTest {
         // Expected exception: HotelNotFoundException
     }
     @Test(expected = HotelNotFoundException.class)
-    public void getHotelById_ReturnsNullWhenHotelNotFound() {
+    public void getHotelById_ReturnsNullWhenHotelNotFound() throws HotelNotFoundException {
         // Arrange
         Long nonExistingHotelId = 1234L;
 

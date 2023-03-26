@@ -61,7 +61,7 @@ public class BookingServiceImplTest {
     }
 
     @Test(expected = HotelNotFoundException.class)
-    public void createBookings_withInvalidHotel_shouldThrowException() {
+    public void createBookings_withInvalidHotel_shouldThrowException() throws NotAvailableException, HotelNotFoundException {
         // Arrange
         long hotelId = 1L;
         LocalDate fromDate = LocalDate.now().plusDays(1);
@@ -77,7 +77,7 @@ public class BookingServiceImplTest {
     }
 
     @Test(expected = NotAvailableException.class)
-    public void createBookings_withNotAvailableAvailability_shouldThrowException() {
+    public void createBookings_withNotAvailableAvailability_shouldThrowException() throws NotAvailableException, HotelNotFoundException {
         // Arrange
         long hotelId = 1L;
         LocalDate fromDate = LocalDate.now().plusDays(1);
@@ -95,7 +95,7 @@ public class BookingServiceImplTest {
         // Assert throws NotAvailableException
     }
     @Test
-    public void createBookings_shouldCreateBookings() {
+    public void createBookings_shouldCreateBookings() throws NotAvailableException, HotelNotFoundException {
         // Arrange
         long hotelId = 1L;
         LocalDate fromDate = LocalDate.of(2022, 1, 1);
@@ -157,7 +157,7 @@ public class BookingServiceImplTest {
     }
 
     @Test
-    public void getBookingById_shouldReturnBooking() {
+    public void getBookingById_shouldReturnBooking() throws BookingNotFoundException {
         // Given
         Long bookingId = 1L;
         Booking expectedBooking = new Booking(
@@ -185,7 +185,7 @@ public class BookingServiceImplTest {
         Assert.assertThrows(BookingNotFoundException.class, () -> bookingService.getBookingById(bookingId));
     }
     @Test
-    public void cancelBooking_shouldCancelBooking() {
+    public void cancelBooking_shouldCancelBooking() throws BookingNotFoundException {
         // Arrange
         Hotel hotel = new Hotel();
         hotel.setId(1L);

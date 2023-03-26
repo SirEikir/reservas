@@ -4,7 +4,7 @@ VALUES ('Hotel Aluciante', '4 estrellas'),
        ('Hotel Flipante', '4 estrellas'),
        ('Hotel Benidorm', '3 estrellas'),
        ('Hotel BuenaVista', '3 estrellas'),
-       ('Hotel Casucha', '5 estrellas');
+       ('Hotel Casucha', '5 estrellas'),
        ('Hotel Monchus', '5 estrellas');
 
 
@@ -53,7 +53,7 @@ VALUES ('2023-03-01', 1, 10),
        ('2023-03-10', 2, 10),
        ('2023-03-11', 2, 10),
        ('2023-03-12', 2, 10),
-       ('2023-03-13', 2, 10),;
+       ('2023-03-13', 2, 10);
 
 -- Insertar datos en la tabla bookings
 INSERT INTO bookings (hotel_id, date_from, date_to, email)

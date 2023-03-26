@@ -1,16 +1,17 @@
 package com.practica.hoteles.reservas.services.impl;
 
-import com.practica.hoteles.reservas.dtos.AvailabilityRange;
+import com.practica.hoteles.reservas.dtos.AvailabilityRangeDto;
 import com.practica.hoteles.reservas.dtos.HotelDto;
 import com.practica.hoteles.reservas.entities.Availability;
 import com.practica.hoteles.reservas.entities.Hotel;
 import com.practica.hoteles.reservas.exceptions.AvailabilityNotFoundException;
+import com.practica.hoteles.reservas.exceptions.HotelNotFoundException;
 import com.practica.hoteles.reservas.exceptions.NotAvailableException;
+import com.practica.hoteles.reservas.mappers.HotelMapper;
 import com.practica.hoteles.reservas.repositories.AvailabilityRepository;
 import com.practica.hoteles.reservas.repositories.BookingRepository;
 import com.practica.hoteles.reservas.repositories.HotelRepository;
 import com.practica.hoteles.reservas.services.AvailabilityService;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,8 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
 
     @Override
-    public AvailabilityRange createAvailabilities (long hotelId, LocalDate initDate, LocalDate endDate, int rooms) {
-        Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new AvailabilityNotFoundException(hotelId));
+    public AvailabilityRangeDto createAvailabilities (long hotelId, LocalDate initDate, LocalDate endDate, int rooms) throws HotelNotFoundException {
+        Hotel hotel = hotelRepository.findById(hotelId).orElseThrow(() -> new HotelNotFoundException(hotelId));
         List<Availability> availabilities = new LinkedList<>();
         LocalDate currentDate = initDate;
 
@@ -70,11 +71,11 @@ public class AvailabilityServiceImpl implements AvailabilityService {
             // Se mueve a la siguiente fecha
             currentDate = currentDate.plusDays(1);
         }
-        return new AvailabilityRange(HotelDto.hotelToDto(hotel), initDate, endDate, rooms);
+        return new AvailabilityRangeDto(HotelMapper.hotelToDto(hotel), initDate, endDate, rooms);
 
     }
     @Override
-    public Availability getAvailabilityByHotelAndDate(long hotelId, LocalDate date) {
+    public Availability getAvailabilityByHotelAndDate(long hotelId, LocalDate date) throws NotAvailableException {
 
         Availability availability = availabilityRepository.findByHotelIdAndDate(hotelId, date);
         if (availability == null) {
@@ -95,6 +96,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
         // Filtrar los hoteles que tengan disponibilidad en todas las fechas y cumplan con los criterios de búsqueda
         return availabilitiesByHotel.entrySet().stream()
+                .filter(entry -> entry.getKey() != null && entry.getKey().getName() != null && entry.getKey().getCategory() != null)
                 .filter(hotelEntry ->
                         (hotelName == null || hotelEntry.getKey().getName().equals(hotelName)) &&
                                 (hotelCategory == null || hotelEntry.getKey().getCategory().equals(hotelCategory)) &&

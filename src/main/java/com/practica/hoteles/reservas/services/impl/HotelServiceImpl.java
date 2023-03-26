@@ -34,7 +34,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel updateHotel(Long id, CreateHotelDto hotelDto) {
+    public Hotel updateHotel(Long id, CreateHotelDto hotelDto) throws HotelNotFoundException {
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() -> new HotelNotFoundException(id));
         hotel.setName(hotelDto.getName());
@@ -43,7 +43,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel getHotelById(Long id) {
+    public Hotel getHotelById(Long id) throws HotelNotFoundException {
         return hotelRepository.findById(id)
                 .orElseThrow(() -> new HotelNotFoundException(id));
     }

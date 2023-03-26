@@ -1,10 +1,13 @@
 package com.practica.hoteles.reservas.serviceTest;
 
-import com.practica.hoteles.reservas.dtos.AvailabilityRange;
+import com.practica.hoteles.reservas.dtos.AvailabilityRangeDto;
 import com.practica.hoteles.reservas.dtos.HotelDto;
 import com.practica.hoteles.reservas.entities.Availability;
 import com.practica.hoteles.reservas.entities.Hotel;
+import com.practica.hoteles.reservas.exceptions.AvailabilityNotFoundException;
+import com.practica.hoteles.reservas.exceptions.HotelNotFoundException;
 import com.practica.hoteles.reservas.exceptions.NotAvailableException;
+import com.practica.hoteles.reservas.mappers.HotelMapper;
 import com.practica.hoteles.reservas.repositories.AvailabilityRepository;
 import com.practica.hoteles.reservas.repositories.HotelRepository;
 import com.practica.hoteles.reservas.services.impl.AvailabilityServiceImpl;
@@ -59,7 +62,7 @@ public class AvailabilityServiceImplTest {
     }
 
     @Test
-    public void createAvailabilities_shouldCreateAvailabilities() {
+    public void createAvailabilities_shouldCreateAvailabilities() throws AvailabilityNotFoundException, HotelNotFoundException {
         // Arrange
         long hotelId = 1L;
         LocalDate initDate = LocalDate.of(2023, 4, 1);
@@ -80,18 +83,18 @@ public class AvailabilityServiceImplTest {
         Mockito.when(availabilityRepository.save(Mockito.any(Availability.class))).thenReturn(availability);
 
         // Act
-        AvailabilityRange result = availabilityService.createAvailabilities(hotelId, initDate, endDate, rooms);
+        AvailabilityRangeDto result = availabilityService.createAvailabilities(hotelId, initDate, endDate, rooms);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(HotelDto.hotelToDto(hotel), result.getHotel());
+        Assert.assertEquals(HotelMapper.hotelToDto(hotel), result.getHotel());
         Assert.assertEquals(initDate, result.getInitDate());
         Assert.assertEquals(endDate, result.getEndDate());
         Assert.assertEquals(rooms, result.getRooms());
     }
 
     @Test
-    public void createAvailabilities_shouldUpdateAvailabilities() {
+    public void createAvailabilities_shouldUpdateAvailabilities() throws AvailabilityNotFoundException, HotelNotFoundException {
         // Arrange
         long hotelId = 1L;
         LocalDate initDate = LocalDate.of(2023, 4, 1);
@@ -110,17 +113,17 @@ public class AvailabilityServiceImplTest {
         Mockito.when(availabilityRepository.findByHotelIdAndDate(hotelId, initDate)).thenReturn(availability);
 
         // Act
-        AvailabilityRange result = availabilityService.createAvailabilities(hotelId, initDate, endDate, rooms);
+        AvailabilityRangeDto result = availabilityService.createAvailabilities(hotelId, initDate, endDate, rooms);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(HotelDto.hotelToDto(hotel), result.getHotel());
+        Assert.assertEquals(HotelMapper.hotelToDto(hotel), result.getHotel());
         Assert.assertEquals(initDate, result.getInitDate());
         Assert.assertEquals(endDate, result.getEndDate());
         Assert.assertEquals(rooms, result.getRooms());
     }
     @Test
-    public void getAvailabilityByHotelAndDate_shouldReturnAvailability() {
+    public void getAvailabilityByHotelAndDate_shouldReturnAvailability() throws NotAvailableException {
         // Arrange
         Hotel hotel = new Hotel();
         hotel.setId(1L);
@@ -310,10 +313,10 @@ public class AvailabilityServiceImplTest {
 
         // No hay disponibilidad para las fechas especificadas
         Availability availability1 = new Availability(fromDate, new Hotel(),  0);
-        Availability availability2 = new Availability(fromDate.plusDays(1), new Hotel(),  0);
-        Availability availability3 = new Availability(fromDate.plusDays(2), new Hotel(),  0);
-        Availability availability4 = new Availability(fromDate.plusDays(3), new Hotel(),  0);
-        Availability availability5 = new Availability(fromDate.plusDays(4), new Hotel(),  0);
+        Availability availability2 = new Availability(fromDate.plusDays(1), new Hotel("Hotel Test1", "5 Estrellas"),  0);
+        Availability availability3 = new Availability(fromDate.plusDays(2), new Hotel("Hotel Test2", "3 Estrellas"),  0);
+        Availability availability4 = new Availability(fromDate.plusDays(3), new Hotel("Hotel Test3", "2 Estrellas"),  0);
+        Availability availability5 = new Availability(fromDate.plusDays(4), new Hotel("Hotel Test4", "5 Estrellas"),  0);
         List<Availability> availabilities = Arrays.asList(
                 availability1, availability2, availability3, availability4, availability5);
         Mockito.when(availabilityRepository.findByDateBetween(fromDate, toDate)).thenReturn(availabilities);
